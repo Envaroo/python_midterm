@@ -37,7 +37,7 @@ def age_set(humans) -> dict:
     """
 
     ages = []
-    age_info = {'kids': 0, 'mids8': 0, 'mids12': 0, 'mids15': 0, 'adults': 0}
+    age_info = {'kids': 0, 'mids12': 0, 'mids15': 0, 'adults': 0}
 
     looping = humans - 1
     while looping >= 0:
@@ -49,15 +49,13 @@ def age_set(humans) -> dict:
             print('정확한 나이를 입력해주세요.')
 
     for age in ages:
-        if 0 <= age < 8:
+        if 0 <= age < 12:
             age_info['kids'] += 1
-        elif 8 <= age < 12:
-            age_info['mids8'] += 1
         elif 12 <= age < 15:
             age_info['mids12'] += 1
-        elif 15 <= age < 19:
+        elif 15 <= age < 18:
             age_info['mids15'] += 1
-        elif age >= 19:
+        elif age >= 18:
             age_info['adults'] += 1
 
     return age_info
@@ -126,7 +124,7 @@ def is_pass(movies, sel_mov, age_info) -> bool:
     """
 
     kids = age_info['kids']
-    mids = age_info['mids8'] + age_info['mids12'] + age_info['mids15']
+    mids = age_info['mids12'] + age_info['mids15']
     adults = age_info['adults']
 
     # 연령 정보를 바탕으로 아동, 청소년, 성인 판단
@@ -143,18 +141,11 @@ def is_pass(movies, sel_mov, age_info) -> bool:
     if movies[sel_mov]['restriction'] == 15:
         if adults >= 1:
             restriction_pass = 1
-        elif kids >= 1 or age_info['mids8'] >= 1 or age_info['mids12'] >= 1:
+        elif kids >= 1 or age_info['mids12'] >= 1:
             restriction_pass = 0
             print('성인의 동행 없이는 관람하실 수 없습니다.')
 
     if movies[sel_mov]['restriction'] == 12:
-        if adults >= 1:
-            restriction_pass = 1
-        elif kids >= 1 or age_info['mids8'] >= 1:
-            restriction_pass = 0
-            print('성인의 동행 없이는 관람하실 수 없습니다.')
-
-    if movies[sel_mov]['restriction'] == 8:
         if adults >= 1:
             restriction_pass = 1
         elif kids >= 1:
@@ -164,19 +155,18 @@ def is_pass(movies, sel_mov, age_info) -> bool:
     return restriction_pass
 
 
-def receipt(movies, sel_mov, sel_time, humans, age_info):
+def receipt(movies, sel_mov, sel_time, age_info):
     """
     가격을 계산하고 영수증을 출력합니다. 예매 정보를 리턴
     :param movies: 영화들의 list
     :param sel_mov: 선택한 영화 index 의 int 값
     :param sel_time: 선택한 영화 index 의, 시간대의 int 값
-    :param humans: 인원수 int 값
     :param age_info: 연령 정보를 담은 dict
     :return: 예매 정보를 담은 list
     """
 
     kids = age_info['kids']
-    mids = age_info['mids8'] + age_info['mids12'] + age_info['mids15']
+    mids = age_info['mids12'] + age_info['mids15']
     adults = age_info['adults']
 
     price = kids * 5000 + mids * 9000 + adults * 11000
@@ -186,7 +176,7 @@ def receipt(movies, sel_mov, sel_time, humans, age_info):
         price = price * 0.5
         is_discount = '\n50% 할인'
 
-    rec_info = ['총 인원 : {0}명, (어린이 {1}명, 청소년 {2}명, 성인 {3}명)'.format(humans, kids, mids, adults),
+    rec_info = ['총 인원 : {0}명, (어린이 {1}명, 청소년 {2}명, 성인 {3}명)'.format(kids+mids+adults, kids, mids, adults),
                 is_discount,
                 '총 금액 : {0}원'.format(int(price))]
 
@@ -230,10 +220,10 @@ def show_hall(sel_hall, hall, sel_time):
         [is_occupied.append(i.split(',')) for i in occupy_element]
 
     print(is_occupied)
-
-    for n in range(len(is_occupied)):
-        hall_2D[int(is_occupied[n][0])][int(is_occupied[n][1]) - 1] = '▩'
-        # 좌석번호의 경우 저장할 때 +1 해주었기 때문에 다시 빼줍니다.
+    if is_occupied is True:
+        for n in range(len(is_occupied)):
+            hall_2D[int(is_occupied[n][0])][int(is_occupied[n][1]) - 1] = '▩'
+            # 좌석번호의 경우 저장할 때 +1 해주었기 때문에 다시 빼줍니다.
 
     print('')
     for y in range(len(hall_2D)):

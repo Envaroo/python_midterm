@@ -301,11 +301,10 @@ while True:
         del mov_lines[-1]
 
     for i in mov_lines:
-
         mov_detail_lines = i.split('/')
         mov_dict = {'name': mov_detail_lines[0], 'restriction': int(mov_detail_lines[1]),
                     'time': [int(i) for i in mov_detail_lines[3:mov_detail_lines.index('timeend')]],
-                    'hall': mov_detail_lines[mov_detail_lines.index('timeend')+1]}
+                    'hall': mov_detail_lines[mov_detail_lines.index('timeend') + 1]}
         movies.append(mov_dict)
 
     movie_file.close()
@@ -327,7 +326,7 @@ while True:
     age_info = tools.age_set(humans)
 
     kids = age_info['kids']
-    mids = age_info['mids8'] + age_info['mids12'] + age_info['mids15']
+    mids = age_info['mids12'] + age_info['mids15']
     adults = age_info['adults']
 
     restriction_pass = tools.is_pass(movies, sel_mov, age_info)
@@ -387,7 +386,7 @@ while True:
                 else:
                     print('정확한 알파벳을 입력해 주세요.')
 
-            sel_row = int(input('{}번째 관객분의 좌석번호를 선택해 주세요 (숫자): '.format(i+1))) - 1
+            sel_row = int(input('{}번째 관객분의 좌석번호를 선택해 주세요 (숫자): '.format(i + 1))) - 1
 
             if [str(sel_line), str(sel_row + 1)] in occupied_seats:
                 print([str(sel_line), str(sel_row + 1)])
@@ -399,9 +398,9 @@ while True:
             else:
                 print(f'{sel_line}, {sel_row}')
                 print('지정했습니다.')
-                sel_seat.append([alpha_inp, sel_row+1])
+                sel_seat.append([alpha_inp, sel_row + 1])
                 occupied_seats.append([sel_line, sel_row])
-                write_seat.write('{0},{1}\n'.format(sel_line, sel_row+1))
+                write_seat.write('{0},{1}\n'.format(sel_line, sel_row + 1))
                 write_seat.close()
                 # 저장하는 형식은 1,5\n
                 # 저장할 때는 좌석번호를 알아보기 쉽게 +1 한다.
@@ -416,7 +415,7 @@ while True:
     # 예매정보에 출력할 좌석정보 저장 끝
 
     rec_info = tools.receipt(movies, sel_mov, sel_time, humans, age_info)
-    print(seat_info + '='*45)
+    print(seat_info + '=' * 45)
 
     # rec_info 에 좌석정보 X
 
