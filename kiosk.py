@@ -297,7 +297,11 @@ while True:
     # 004분반 7주차 UTF8 인코딩 사용하기
     mov_lines = movie_file.readlines()
     movies = []
+    if mov_lines[-1] == '\n':
+        del mov_lines[-1]
+
     for i in mov_lines:
+
         mov_detail_lines = i.split('/')
         mov_dict = {'name': mov_detail_lines[0], 'restriction': int(mov_detail_lines[1]),
                     'time': [int(i) for i in mov_detail_lines[3:mov_detail_lines.index('timeend')]],
@@ -347,8 +351,14 @@ while True:
 
     if movies[sel_mov]['hall'] == 'A':
         sel_hall = A
+        for i in movies[sel_mov]['time']:
+            check_time_files = open(f'hall_A{i}.txt', 'a')
+            check_time_files.close()
     elif movies[sel_mov]['hall'] == 'B':
         sel_hall = B
+        for i in movies[sel_mov]['time']:
+            check_time_files = open(f'hall_B{i}.txt', 'a')
+            check_time_files.close()
 
     # sel_hall 에는 상영관의 가로세로좌석 개수가 리스트로 들어감
 
@@ -357,14 +367,14 @@ while True:
     # 예매권에 들어갈 좌석정보를 받습니다.
 
     for i in range(humans):
-        occupied_seats = tools.show_hall(sel_hall, movies[sel_mov]['hall'])
+        occupied_seats = tools.show_hall(sel_hall, movies[sel_mov]['hall'], movies[sel_mov]['time'][sel_time])
         # show_hall() 함수로 표시하고 예약좌석 정보를 받습니다.
         while True:
 
             if movies[sel_mov]['hall'] == 'A':
-                write_seat = open('hall_A.txt', 'a')
+                write_seat = open('hall_A{}.txt'.format(movies[sel_mov]['time'][sel_time]), 'a')
             elif movies[sel_mov]['hall'] == 'B':
-                write_seat = open('hall_B.txt', 'a')
+                write_seat = open('hall_B{}.txt'.format(movies[sel_mov]['time'][sel_time]), 'a')
 
             # 매 회차 파일을 읽도록...
 
@@ -420,7 +430,9 @@ while True:
                     movies[sel_mov]['name'],
                     movies[sel_mov]['hall'],
                     seat_info,
-                    str(movies[sel_mov]['time'][sel_time])[0:-2] + ':' + str(movies[sel_mov]['time'][sel_time])[-2:],
+                    str(movies[sel_mov]['time'][sel_time])[0:-2]
+                    + ':' +
+                    str(movies[sel_mov]['time'][sel_time])[-2:],
                     rec_info[0],
                     rec_info[1],
                     rec_info[2]))
