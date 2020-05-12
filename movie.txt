@@ -1,0 +1,4 @@
+1917/15/timetable/800/1200/1500/2100/timeend/A/
+무간도/12/timetable/720/1130/1300/2300/timeend/B/
+타짜/18/timetable/720/2330/timeend/A/
+
