@@ -360,6 +360,7 @@ while True:
             check_time_files = open(f'hall_B{i}.txt', 'a')
             check_time_files.close()
 
+    # check_time_files 는 각 시간대 관객정보를 담은 txt 파일들을 생성합니다.
     # sel_hall 에는 상영관의 가로세로좌석 개수가 리스트로 들어감
 
     sel_seat = []
