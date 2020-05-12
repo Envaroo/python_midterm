@@ -195,11 +195,12 @@ def receipt(movies, sel_mov, sel_time, humans, age_info):
     return rec_info
 
 
-def show_hall(sel_hall, hall):
+def show_hall(sel_hall, hall, sel_time):
     """
     좌석 정보를 print 합니다.
     :param sel_hall: 선택한 좌석 정보 list
     :param hall: 선택한 상영관 str
+    :param sel_time: 선택한 시간대 int (HHMM 꼴)
     :return: 예약된 좌석 정보를 담은 2차원 list is_occupied
     """
     line = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
@@ -209,7 +210,7 @@ def show_hall(sel_hall, hall):
 
     is_occupied = []
     if hall == 'A':
-        occupy_file = open('hall_A.txt', 'r')
+        occupy_file = open('hall_A{}.txt'.format(sel_time), 'r')
         occupy_line = occupy_file.read()
         print(occupy_line)
 
@@ -222,7 +223,7 @@ def show_hall(sel_hall, hall):
         # is_occupied 의 형식 -> [['2','3'],['1','10']] 꼴
 
     elif hall == 'B':
-        occupy_file = open('hall_B.txt', 'r')
+        occupy_file = open('hall_B{}.txt'.format(sel_time), 'r')
         occupy_line = occupy_file.read()
         occupy_line.rstrip('\n')
         occupy_element = occupy_line.split('\n')
