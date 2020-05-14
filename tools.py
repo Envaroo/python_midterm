@@ -70,19 +70,43 @@ def select_movie(movies) -> int:
     box_office = []
 
     for i in movies:
-        box_office.append(
-            str(movies.index(i) + 1) + '. ' + i['name'] + '  /  ' + str(i['restriction']) + '세 관람가 ' + str(
-                i['hall']) + '관')
+        index_number = str(movies.index(i) + 1)
+        movie_name = i['name']
+        if i['restriction'] != 0:
+            age_restrict = str(i['restriction']) + '세 관람가 '
+        elif i['restriction'] == 0:
+            age_restrict = '전체 이용가'
+        which_hall = str(i['hall']) + '관'
+
+        # if i['restriction'] != 0:
+        #     box_office.append(
+        #         str(movies.index(i) + 1) + '. ' + i['name']
+        #         + '  /  '
+        #         + str(i['restriction']) + '세 관람가 '
+        #         + str(i['hall']) + '관')
+        # elif i['restriction'] == 0:
+        #     box_office.append(
+        #         str(movies.index(i) + 1) + '. ' +
+        #         + '  /  '
+        #         + '전체 이용가 '
+        #         + str(i['hall']) + '관')
+
+        box_office.append(f"{index_number}. {movie_name:^10} / {age_restrict:^10} / {which_hall}")
 
     ui(box_office)
 
+    # 영화 목록 표시 끝
+
     while True:
-        sel_mov = int(input('관람하실 영화를 선택해 주세요: '))
-        if sel_mov <= len(movies):
-            sel_mov = sel_mov - 1
-            # 리스트 인덱스에 맞게 1을 빼줌
-            return sel_mov
-        else:
+        try:
+            sel_mov = int(input('관람하실 영화를 선택해 주세요: '))
+            if sel_mov <= len(movies):
+                sel_mov = sel_mov - 1
+                # 리스트 인덱스에 맞게 1을 빼줌
+                return sel_mov
+            else:
+                print('잘못된 입력입니다.')
+        except ValueError:
             print('잘못된 입력입니다.')
 
 
@@ -101,16 +125,19 @@ def select_time(movies, sel_mov) -> int:
     ui(box_time)
 
     while True:
-        sel_time = int(input('관람하실 시간을 선택해 주세요: '))
-        if sel_time <= len(movies[sel_mov]['time']):
-            sel_time = sel_time - 1
-            # 리스트 인덱스에 맞게 1을 빼줌
-            if movies[sel_mov]['time'][sel_time] <= 1000:
-                print('\n조조 시간대입니다. 가격이 50% 할인됩니다.\n')
-            if movies[sel_mov]['time'][sel_time] >= 2200:
-                print('\n야간 시간대입니다. 가격이 50% 할인됩니다.\n')
-            return sel_time
-        else:
+        try:
+            sel_time = int(input('관람하실 시간을 선택해 주세요: '))
+            if sel_time <= len(movies[sel_mov]['time']):
+                sel_time = sel_time - 1
+                # 리스트 인덱스에 맞게 1을 빼줌
+                if movies[sel_mov]['time'][sel_time] <= 1000:
+                    print('\n조조 시간대입니다. 가격이 50% 할인됩니다.\n')
+                if movies[sel_mov]['time'][sel_time] >= 2200:
+                    print('\n야간 시간대입니다. 가격이 50% 할인됩니다.\n')
+                return sel_time
+            else:
+                print('잘못된 입력입니다.')
+        except ValueError:
             print('잘못된 입력입니다.')
 
 
@@ -188,7 +215,7 @@ def receipt(movies, sel_mov, sel_time, age_info):
 def show_hall(sel_hall, hall, sel_time):
     """
     좌석 정보를 print 합니다.
-    :param sel_hall: 선택한 좌석 정보 list
+    :param sel_hall: 선택한 상영관 정보 list (세로열, 가로줄)
     :param hall: 선택한 상영관 str
     :param sel_time: 선택한 시간대 int (HHMM 꼴)
     :return: 예약된 좌석 정보를 담은 2차원 list is_occupied
@@ -196,13 +223,14 @@ def show_hall(sel_hall, hall, sel_time):
     line = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']
     hall_2D = []
     for i in range(sel_hall[0]):
-        hall_2D.append(['□' for i in range(sel_hall[1])])
+        hall_2D.append(['.' for i in range(sel_hall[1])])
 
     is_occupied = []
     if hall == 'A':
         occupy_file = open('hall_A{}.txt'.format(sel_time), 'r')
         occupy_line = occupy_file.read()
         print(occupy_line)
+        # 테스트전용
 
         occupy_element = occupy_line.split('\n')
 
@@ -215,23 +243,29 @@ def show_hall(sel_hall, hall, sel_time):
     elif hall == 'B':
         occupy_file = open('hall_B{}.txt'.format(sel_time), 'r')
         occupy_line = occupy_file.read()
-        occupy_line.rstrip('\n')
         occupy_element = occupy_line.split('\n')
         [is_occupied.append(i.split(',')) for i in occupy_element]
 
     print(is_occupied)
-    if is_occupied is True:
+    # 테스트전용
+    if len(is_occupied) > 0:
+        if is_occupied[-1] == ['']:
+            is_occupied.remove([''])
         for n in range(len(is_occupied)):
-            hall_2D[int(is_occupied[n][0])][int(is_occupied[n][1]) - 1] = '▩'
-            # 좌석번호의 경우 저장할 때 +1 해주었기 때문에 다시 빼줍니다.
+            hall_2D[int(is_occupied[n][0])][int(is_occupied[n][1]) - 1] = '#'
+        # 좌석번호의 경우 저장할 때 +1 해주었기 때문에 다시 빼줍니다.
 
+    print('    ', end='')
+    for x in range(sel_hall[1]):
+        print(f'{x + 1:^3}', end='')
     print('')
     for y in range(len(hall_2D)):
-        print(line[y], end='   ')
+        print(f'{line[y]:<4}', end='')
+        # 좌측 열 알파벳 표시
         for x in range(len(hall_2D[y])):
-            print(x + 1, end='')
-            print(hall_2D[y][x], end=' ')
+            print(f'{hall_2D[y][x]:^3}', end='')
+            # 빈칸 예약칸 표시
         print('')
     print('')
-
+    # 002분반 실습 week3 fstring 으로 문자열 정렬하기
     return is_occupied

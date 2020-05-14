@@ -268,6 +268,9 @@
 # v0.5: 예매영화 선택 기능을 추가하였습니다. 예매시간 선택 기능을 추가하였습니다. 모듈화 후 파일을 분리하였습니다.
 # v0.6: 연령 제한을 설정. 시간대별 가격 책정. 모듈화 후 파일분리. 전체 프로그램을 루프에 넣었습니다.
 # v0.7: 영화 정보를 txt 파일로 입출력합니다. 예매표를 txt 로 출력합니다. 좌석 선택 기능을 추가했습니다.
+# 8세 이상 관람가를 삭제했습니다 (실제로 없음), 전연령 관람가를 추가했습니다.
+# ui를 수정했습니다. 입력 시 예외처리를 시행합니다.
+# 좌석 열 입력시 소문자를 대문자로 처리합니다.
 
 import tools
 
@@ -380,16 +383,22 @@ while True:
 
             while True:
                 alpha_inp = input('{}번째 관객분의 열을 선택해 주세요 (알파벳): '.format(i + 1))
-                if alpha_inp in line:
-                    sel_line = line.index(alpha_inp)
+                if alpha_inp.upper() in line:
+                    sel_line = line.index(alpha_inp.upper())
                     break
                 else:
                     print('정확한 알파벳을 입력해 주세요.')
 
-            sel_row = int(input('{}번째 관객분의 좌석번호를 선택해 주세요 (숫자): '.format(i + 1))) - 1
+            while True:
+                try:
+                    sel_row = int(input('{}번째 관객분의 좌석번호를 선택해 주세요 (숫자): '.format(i + 1))) - 1
+                    break
+                except ValueError:
+                    print('잘못된 입력입니다.')
 
             if [str(sel_line), str(sel_row + 1)] in occupied_seats:
                 print([str(sel_line), str(sel_row + 1)])
+                # 테스트전용
                 print('이미 선택된 좌석입니다.')
                 continue
             if sel_line > sel_hall[0] or sel_row > sel_hall[1]:
@@ -397,6 +406,7 @@ while True:
                 continue
             else:
                 print(f'{sel_line}, {sel_row}')
+                # 테스트전용
                 print('지정했습니다.')
                 sel_seat.append([alpha_inp, sel_row + 1])
                 occupied_seats.append([sel_line, sel_row])
@@ -414,7 +424,7 @@ while True:
 
     # 예매정보에 출력할 좌석정보 저장 끝
 
-    rec_info = tools.receipt(movies, sel_mov, sel_time, humans, age_info)
+    rec_info = tools.receipt(movies, sel_mov, sel_time, age_info)
     print(seat_info + '=' * 45)
 
     # rec_info 에 좌석정보 X
