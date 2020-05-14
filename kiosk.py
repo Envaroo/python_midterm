@@ -268,9 +268,10 @@
 # v0.5: 예매영화 선택 기능을 추가하였습니다. 예매시간 선택 기능을 추가하였습니다. 모듈화 후 파일을 분리하였습니다.
 # v0.6: 연령 제한을 설정. 시간대별 가격 책정. 모듈화 후 파일분리. 전체 프로그램을 루프에 넣었습니다.
 # v0.7: 영화 정보를 txt 파일로 입출력합니다. 예매표를 txt 로 출력합니다. 좌석 선택 기능을 추가했습니다.
-# 8세 이상 관람가를 삭제했습니다 (실제로 없음), 전연령 관람가를 추가했습니다.
-# ui를 수정했습니다. 입력 시 예외처리를 시행합니다.
-# 좌석 열 입력시 소문자를 대문자로 처리합니다.
+#       8세 이상 관람가를 삭제했습니다 (실제로 없음), 전연령 관람가를 추가했습니다.
+#       ui를 수정했습니다. 입력 시 예외처리를 시행합니다.
+#       좌석 열 입력시 소문자를 대문자로 처리합니다.
+#       파일을 입출력할때 if 문이 아닌 파일 이름 포맷을 통해 입출력합니다.
 
 import tools
 
@@ -353,15 +354,12 @@ while True:
 
     if movies[sel_mov]['hall'] == 'A':
         sel_hall = A
-        for i in movies[sel_mov]['time']:
-            check_time_files = open(f'hall_A{i}.txt', 'a')
-            check_time_files.close()
     elif movies[sel_mov]['hall'] == 'B':
         sel_hall = B
-        for i in movies[sel_mov]['time']:
-            check_time_files = open(f'hall_B{i}.txt', 'a')
-            check_time_files.close()
 
+    for i in movies[sel_mov]['time']:
+        check_time_files = open(f"hall_{movies[sel_mov]['hall']}{str(i)}.txt", 'r')
+        check_time_files.close()
     # check_time_files 는 각 시간대 관객정보를 담은 txt 파일들을 생성합니다.
     # sel_hall 에는 상영관의 가로세로좌석 개수가 리스트로 들어감
 
@@ -374,11 +372,12 @@ while True:
         # show_hall() 함수로 표시하고 예약좌석 정보를 받습니다.
         while True:
 
-            if movies[sel_mov]['hall'] == 'A':
-                write_seat = open('hall_A{}.txt'.format(movies[sel_mov]['time'][sel_time]), 'a')
-            elif movies[sel_mov]['hall'] == 'B':
-                write_seat = open('hall_B{}.txt'.format(movies[sel_mov]['time'][sel_time]), 'a')
+            # if movies[sel_mov]['hall'] == 'A':
+            #     write_seat = open('hall_A{}.txt'.format(movies[sel_mov]['time'][sel_time]), 'a')
+            # elif movies[sel_mov]['hall'] == 'B':
+            #     write_seat = open('hall_B{}.txt'.format(movies[sel_mov]['time'][sel_time]), 'a')
 
+            write_seat = open(f"hall_{movies[sel_mov]['hall']}{str(i)}.txt", 'a')
             # 매 회차 파일을 읽도록...
 
             while True:
@@ -397,16 +396,16 @@ while True:
                     print('잘못된 입력입니다.')
 
             if [str(sel_line), str(sel_row + 1)] in occupied_seats:
-                print([str(sel_line), str(sel_row + 1)])
-                # 테스트전용
+                # print([str(sel_line), str(sel_row + 1)])
+                # # 테스트전용
                 print('이미 선택된 좌석입니다.')
                 continue
             if sel_line > sel_hall[0] or sel_row > sel_hall[1]:
                 print('정확한 좌석을 선택해 주세요.')
                 continue
             else:
-                print(f'{sel_line}, {sel_row}')
-                # 테스트전용
+                # print(f'{sel_line}, {sel_row}')
+                # # 테스트전용
                 print('지정했습니다.')
                 sel_seat.append([alpha_inp, sel_row + 1])
                 occupied_seats.append([sel_line, sel_row])
@@ -433,7 +432,7 @@ while True:
 
     is_print = input('예매표를 출력하시겠습니까? (Y/N)')
     while True:
-        if is_print == 'y' or 'Y':
+        if is_print.upper() == 'Y':
             rec_file = open('receipt.txt', 'w', encoding='utf8')
             rec_file.write(
                 '{0}\n{1}관 {2}\n상영 시작 시간: {3}\n\n<영수증>\n{4}\n{5}\n{6}'.format(
@@ -448,7 +447,7 @@ while True:
                     rec_info[2]))
             rec_file.close()
             break
-        elif is_print == 'n' or 'N':
+        elif is_print.upper() == 'N':
             break
         else:
             print('잘못된 입력입니다.')

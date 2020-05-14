@@ -120,7 +120,22 @@ def select_time(movies, sel_mov) -> int:
     box_time = []
 
     for i in movies[sel_mov]['time']:
-        box_time.append(str(movies[sel_mov]['time'].index(i) + 1) + '. ' + str(i)[0:-2] + ':' + str(i)[-2:])
+        time_index = str(movies[sel_mov]['time'].index(i) + 1)
+
+        occupy_file = open(f"hall_{movies[sel_mov]['hall']}{str(i)}.txt", 'r')
+        occupy_line = occupy_file.read()
+        occupy_element = occupy_line.split('\n')
+        if occupy_element[-1] == '':
+            del occupy_element[-1]
+        occ_seats = len(occupy_element)
+        if movies[sel_mov]['hall'] == 'A':
+            totl_seats = 90
+        if movies[sel_mov]['hall'] == 'B':
+            totl_seats = 140
+
+        time_format = f"{str(i)[0:-2]}:{str(i)[-2:]}"
+
+        box_time.append(f"{time_index}. {time_format:>6}    {occ_seats} / {totl_seats}")
 
     ui(box_time)
 
@@ -226,28 +241,22 @@ def show_hall(sel_hall, hall, sel_time):
         hall_2D.append(['.' for i in range(sel_hall[1])])
 
     is_occupied = []
-    if hall == 'A':
-        occupy_file = open('hall_A{}.txt'.format(sel_time), 'r')
-        occupy_line = occupy_file.read()
-        print(occupy_line)
-        # 테스트전용
 
-        occupy_element = occupy_line.split('\n')
+    occupy_file = open('hall_{}{}.txt'.format(hall, sel_time), 'r')
+    occupy_line = occupy_file.read()
+    # print(occupy_line)
+    # # 테스트전용
 
-        # element 의 형식 -> ['2,3', '1,10'...''] 꼴
+    occupy_element = occupy_line.split('\n')
 
-        [is_occupied.append(i.split(',')) for i in occupy_element]
-        del is_occupied[-1]
-        # is_occupied 의 형식 -> [['2','3'],['1','10']] 꼴
+    # element 의 형식 -> ['2,3', '1,10'...''] 꼴
 
-    elif hall == 'B':
-        occupy_file = open('hall_B{}.txt'.format(sel_time), 'r')
-        occupy_line = occupy_file.read()
-        occupy_element = occupy_line.split('\n')
-        [is_occupied.append(i.split(',')) for i in occupy_element]
+    [is_occupied.append(i.split(',')) for i in occupy_element]
+    del is_occupied[-1]
+    # is_occupied 의 형식 -> [['2','3'],['1','10']] 꼴
 
-    print(is_occupied)
-    # 테스트전용
+    # print(is_occupied)
+    # # 테스트전용
     if len(is_occupied) > 0:
         if is_occupied[-1] == ['']:
             is_occupied.remove([''])
