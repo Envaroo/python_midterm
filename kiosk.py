@@ -388,7 +388,8 @@ while True:
 
             while True:
                 alpha_inp = input('{}번째 관객분의 열을 선택해 주세요 (알파벳): '.format(i + 1))
-                if alpha_inp.upper() in line:
+                end = sel_hall[0]
+                if alpha_inp.upper() in line[0:end]:
                     sel_line = line.index(alpha_inp.upper())
                     break
                 else:
@@ -397,7 +398,10 @@ while True:
             while True:
                 try:
                     sel_row = int(input('{}번째 관객분의 좌석번호를 선택해 주세요 (숫자): '.format(i + 1))) - 1
-                    break
+                    if 0 < sel_row < sel_hall[1]:
+                        break
+                    else:
+                        print('정확한 좌석을 입력해 주세요.')
                 except ValueError:
                     print('잘못된 입력입니다.')
 
@@ -405,9 +409,6 @@ while True:
                 # print([str(sel_line), str(sel_row + 1)])
                 # # 테스트전용
                 print('이미 선택된 좌석입니다.')
-                continue
-            if sel_line > sel_hall[0] or sel_row > sel_hall[1]:
-                print('정확한 좌석을 선택해 주세요.')
                 continue
             else:
                 # print(f'{sel_line}, {sel_row}')
@@ -436,12 +437,12 @@ while True:
 
     # 예매정보 출력
 
-    is_print = input('예매표를 출력하시겠습니까? (Y/N)')
     while True:
+        is_print = input('예매표를 출력하시겠습니까? (Y/N)')
         if is_print.upper() == 'Y':
             rec_file = open('receipt.txt', 'w', encoding='utf8')
             rec_file.write(
-                '{0}\n{1}관 {2}\n상영 시작 시간: {3}\n\n<영수증>\n{4}\n{5}\n{6}'.format(
+                '{0}\n{1}관\n{2}\n상영 시작 시간: {3}\n\n<영수증>\n{4}\n{5}\n{6}'.format(
                     movies[sel_mov]['name'],
                     movies[sel_mov]['hall'],
                     seat_info,
@@ -459,3 +460,4 @@ while True:
             print('잘못된 입력입니다.')
 
     input('\n사용해 주셔서 감사합니다. 초기 화면으로 돌아갑니다. (엔터로 계속하기)\n')
+

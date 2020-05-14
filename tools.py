@@ -20,13 +20,15 @@ def humans() -> int:
     """
 
     while True:
-        humans = int(input('몇 분이 오셨습니까?'))
+        try:
+            humans = int(input('몇 분이 오셨습니까?'))
+            if humans >= 1:
+                return humans
 
-        if humans >= 1:
-            return humans
-
-        else:
-            print('정확한 인원 수를 입력하세요.')
+            else:
+                print('정확한 인원 수를 입력하세요.')
+        except ValueError:
+            print('잘못된 입력입니다.')
 
 
 def age_set(humans) -> dict:
@@ -103,7 +105,7 @@ def select_movie(movies) -> int:
     while True:
         try:
             sel_mov = int(input('관람하실 영화를 선택해 주세요: '))
-            if sel_mov <= len(movies):
+            if sel_mov in range(len(movies)+1):
                 sel_mov = sel_mov - 1
                 # 리스트 인덱스에 맞게 1을 빼줌
                 return sel_mov
@@ -144,7 +146,7 @@ def select_time(movies, sel_mov) -> int:
     while True:
         try:
             sel_time = int(input('관람하실 시간을 선택해 주세요: '))
-            if sel_time <= len(movies[sel_mov]['time']):
+            if sel_time in range(len(movies[sel_mov]['time'])+1):
                 sel_time = sel_time - 1
                 # 리스트 인덱스에 맞게 1을 빼줌
                 if movies[sel_mov]['time'][sel_time] <= 1000:
