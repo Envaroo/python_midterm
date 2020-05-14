@@ -311,9 +311,19 @@ while True:
                     'hall': mov_detail_lines[mov_detail_lines.index('timeend') + 1]}
         movies.append(mov_dict)
 
+    # 영화 정보를 담는 movies 리스트
+    # 형식은 [{...},{...},{...}]
+
     movie_file.close()
 
     # 영화 정보 가져오기... movies 리스트의 입력이 끝났습니다.
+
+    for k in movies:
+        for i in k['time']:
+            check_time_files = open(f"hall_{k['hall']}{str(i)}.txt", 'a')
+            check_time_files.close()
+
+    # check_time_files 는 각 시간대 관객정보를 담은 txt 파일들을 생성합니다.
 
     sel_mov = tools.select_movie(movies)
 
@@ -335,7 +345,7 @@ while True:
 
     restriction_pass = tools.is_pass(movies, sel_mov, age_info)
     if restriction_pass == 0:
-        input('초기 화면으로 돌아갑니다. (아무 키로 계속하기)\n')
+        input('초기 화면으로 돌아갑니다. (엔터로 계속하기)\n')
         continue
 
     # 연령확인 끝, 실패하면 전부 continue
@@ -357,10 +367,6 @@ while True:
     elif movies[sel_mov]['hall'] == 'B':
         sel_hall = B
 
-    for i in movies[sel_mov]['time']:
-        check_time_files = open(f"hall_{movies[sel_mov]['hall']}{str(i)}.txt", 'r')
-        check_time_files.close()
-    # check_time_files 는 각 시간대 관객정보를 담은 txt 파일들을 생성합니다.
     # sel_hall 에는 상영관의 가로세로좌석 개수가 리스트로 들어감
 
     sel_seat = []
@@ -377,7 +383,7 @@ while True:
             # elif movies[sel_mov]['hall'] == 'B':
             #     write_seat = open('hall_B{}.txt'.format(movies[sel_mov]['time'][sel_time]), 'a')
 
-            write_seat = open(f"hall_{movies[sel_mov]['hall']}{str(i)}.txt", 'a')
+            write_seat = open(f"hall_{movies[sel_mov]['hall']}{movies[sel_mov]['time'][sel_time]}.txt", 'a')
             # 매 회차 파일을 읽도록...
 
             while True:
@@ -452,4 +458,4 @@ while True:
         else:
             print('잘못된 입력입니다.')
 
-    input('\n사용해 주셔서 감사합니다. 초기 화면으로 돌아갑니다. (아무 키로 계속하기)\n')
+    input('\n사용해 주셔서 감사합니다. 초기 화면으로 돌아갑니다. (엔터로 계속하기)\n')

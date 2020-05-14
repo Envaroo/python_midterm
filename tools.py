@@ -42,10 +42,13 @@ def age_set(humans) -> dict:
     looping = humans - 1
     while looping >= 0:
         age_input = input('나이는?')
-        if int(age_input) >= 0:
-            ages.append(int(age_input))
-            looping = looping - 1
-        else:
+        try:
+            if int(age_input) >= 0:
+                ages.append(int(age_input))
+                looping = looping - 1
+            else:
+                print('정확한 나이를 입력해주세요.')
+        except ValueError:
             print('정확한 나이를 입력해주세요.')
 
     for age in ages:
@@ -121,7 +124,6 @@ def select_time(movies, sel_mov) -> int:
 
     for i in movies[sel_mov]['time']:
         time_index = str(movies[sel_mov]['time'].index(i) + 1)
-
         occupy_file = open(f"hall_{movies[sel_mov]['hall']}{str(i)}.txt", 'r')
         occupy_line = occupy_file.read()
         occupy_element = occupy_line.split('\n')
