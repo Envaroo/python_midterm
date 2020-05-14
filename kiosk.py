@@ -453,6 +453,7 @@ while True:
                     rec_info[1],
                     rec_info[2]))
             rec_file.close()
+            print('예매표가 receipt.txt에 저장되었습니다.')
             break
         elif is_print.upper() == 'N':
             break
