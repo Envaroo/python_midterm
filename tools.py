@@ -20,15 +20,12 @@ def humans() -> int:
     """
 
     while True:
-        try:
-            humans = int(input('몇 분이 오셨습니까?'))
-            if humans >= 1:
-                return humans
+        humans = int(input('몇 분이 오셨습니까?'))
+        if humans >= 1:
+            return humans
 
-            else:
-                print('정확한 인원 수를 입력하세요.')
-        except ValueError:
-            print('잘못된 입력입니다.')
+        else:
+            print('정확한 인원 수를 입력하세요.')
 
 
 def age_set(humans) -> dict:
@@ -44,13 +41,10 @@ def age_set(humans) -> dict:
     looping = humans - 1
     while looping >= 0:
         age_input = input('나이는?')
-        try:
-            if int(age_input) >= 0:
-                ages.append(int(age_input))
-                looping = looping - 1
-            else:
-                print('정확한 나이를 입력해주세요.')
-        except ValueError:
+        if int(age_input) >= 0:
+            ages.append(int(age_input))
+            looping = looping - 1
+        else:
             print('정확한 나이를 입력해주세요.')
 
     for age in ages:
@@ -103,15 +97,13 @@ def select_movie(movies) -> int:
     # 영화 목록 표시 끝
 
     while True:
-        try:
-            sel_mov = int(input('관람하실 영화를 선택해 주세요: '))
-            if sel_mov in range(len(movies)+1):
-                sel_mov = sel_mov - 1
-                # 리스트 인덱스에 맞게 1을 빼줌
-                return sel_mov
-            else:
-                print('잘못된 입력입니다.')
-        except ValueError:
+
+        sel_mov = int(input('관람하실 영화를 선택해 주세요: '))
+        if sel_mov in range(len(movies)+1):
+            sel_mov = sel_mov - 1
+            # 리스트 인덱스에 맞게 1을 빼줌
+            return sel_mov
+        else:
             print('잘못된 입력입니다.')
 
 
@@ -144,19 +136,17 @@ def select_time(movies, sel_mov) -> int:
     ui(box_time)
 
     while True:
-        try:
-            sel_time = int(input('관람하실 시간을 선택해 주세요: '))
-            if sel_time in range(len(movies[sel_mov]['time'])+1):
-                sel_time = sel_time - 1
-                # 리스트 인덱스에 맞게 1을 빼줌
-                if movies[sel_mov]['time'][sel_time] <= 1000:
-                    print('\n조조 시간대입니다. 가격이 50% 할인됩니다.\n')
-                if movies[sel_mov]['time'][sel_time] >= 2200:
-                    print('\n야간 시간대입니다. 가격이 50% 할인됩니다.\n')
-                return sel_time
-            else:
-                print('잘못된 입력입니다.')
-        except ValueError:
+
+        sel_time = int(input('관람하실 시간을 선택해 주세요: '))
+        if sel_time in range(len(movies[sel_mov]['time'])+1):
+            sel_time = sel_time - 1
+            # 리스트 인덱스에 맞게 1을 빼줌
+            if movies[sel_mov]['time'][sel_time] <= 1000:
+                print('\n조조 시간대입니다. 가격이 50% 할인됩니다.\n')
+            if movies[sel_mov]['time'][sel_time] >= 2200:
+                print('\n야간 시간대입니다. 가격이 50% 할인됩니다.\n')
+            return sel_time
+        else:
             print('잘못된 입력입니다.')
 
 
