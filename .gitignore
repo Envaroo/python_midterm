@@ -3,3 +3,4 @@ __pycache__
 venv
 hall_*.txt
 receipt.txt
+*.pyc

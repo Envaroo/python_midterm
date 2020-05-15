@@ -277,7 +277,7 @@ def show_hall(sel_hall, hall, sel_time):
         # 좌측 열 알파벳 표시
         for x in range(len(hall_2D[y])):
             print(f'{hall_2D[y][x]:^3}', end='')
-            # 빈칸 예약칸 표시
+            # 빈칸, 예약칸 표시
         print('')
     print('')
     # 002분반 실습 week3 fstring 으로 문자열 정렬하기
