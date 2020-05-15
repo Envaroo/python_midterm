@@ -269,8 +269,8 @@
 # v0.6: 연령 제한을 설정. 시간대별 가격 책정. 모듈화 후 파일분리. 전체 프로그램을 루프에 넣었습니다.
 # v0.7: 영화 정보를 txt 파일로 입출력합니다. 예매표를 txt 로 출력합니다. 좌석 선택 기능을 추가했습니다.
 #       8세 이상 관람가를 삭제했습니다 (실제로 없음), 전연령 관람가를 추가했습니다.
-#       ui를 수정했습니다. 입력 시 예외처리를 시행합니다.
-#       좌석 열 입력시 소문자를 대문자로 처리합니다.
+#       ui를 수정했습니다.
+#       알파벳 입력이 필요한 부분에서 소문자를 대문자로 처리합니다.
 #       파일을 입출력할때 if 문이 아닌 파일 이름 포맷을 통해 입출력합니다.
 
 import tools
@@ -312,7 +312,7 @@ while True:
         movies.append(mov_dict)
 
     # 영화 정보를 담는 movies 리스트
-    # 형식은 [{...},{...},{...}]
+    # 형식은 [{이름, 연령, [시간], 상영관},{...},{...}]
 
     movie_file.close()
 
@@ -403,7 +403,6 @@ while True:
                 else:
                     print('정확한 좌석을 입력해 주세요.')
 
-
             if [str(sel_line), str(sel_row + 1)] in occupied_seats:
                 # print([str(sel_line), str(sel_row + 1)])
                 # # 테스트전용
@@ -413,7 +412,7 @@ while True:
                 # print(f'{sel_line}, {sel_row}')
                 # # 테스트전용
                 print('지정했습니다.')
-                sel_seat.append([alpha_inp, sel_row + 1])
+                sel_seat.append([alpha_inp.upper(), sel_row + 1])
                 occupied_seats.append([sel_line, sel_row])
                 write_seat.write('{0},{1}\n'.format(sel_line, sel_row + 1))
                 write_seat.close()

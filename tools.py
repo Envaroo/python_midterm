@@ -224,7 +224,7 @@ def receipt(movies, sel_mov, sel_time, age_info):
     return rec_info
 
 
-def show_hall(sel_hall, hall, sel_time):
+def show_hall(sel_hall, hall, sel_time) -> list:
     """
     좌석 정보를 print 합니다.
     :param sel_hall: 선택한 상영관 정보 list (세로열, 가로줄)
@@ -252,7 +252,6 @@ def show_hall(sel_hall, hall, sel_time):
     del is_occupied[-1]
     # is_occupied 의 형식 -> [['2','3'],['1','10']] 꼴
 
-    # print(is_occupied)
     # # 테스트전용
     if len(is_occupied) > 0:
         if is_occupied[-1] == ['']:
