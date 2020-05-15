@@ -139,13 +139,16 @@ def select_time(movies, sel_mov) -> int:
 
         sel_time = int(input('관람하실 시간을 선택해 주세요: '))
         if sel_time in range(len(movies[sel_mov]['time'])+1):
-            sel_time = sel_time - 1
-            # 리스트 인덱스에 맞게 1을 빼줌
-            if movies[sel_mov]['time'][sel_time] <= 1000:
-                print('\n조조 시간대입니다. 가격이 50% 할인됩니다.\n')
-            if movies[sel_mov]['time'][sel_time] >= 2200:
-                print('\n야간 시간대입니다. 가격이 50% 할인됩니다.\n')
-            return sel_time
+            if occ_seats < totl_seats:
+                sel_time = sel_time - 1
+                # 리스트 인덱스에 맞게 1을 빼줌
+                if movies[sel_mov]['time'][sel_time] <= 1000:
+                    print('\n조조 시간대입니다. 가격이 50% 할인됩니다.\n')
+                if movies[sel_mov]['time'][sel_time] >= 2200:
+                    print('\n야간 시간대입니다. 가격이 50% 할인됩니다.\n')
+                return sel_time
+            elif occ_seats == totl_seats:
+                print('남은 좌석이 없습니다.')
         else:
             print('잘못된 입력입니다.')
 
