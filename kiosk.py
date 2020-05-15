@@ -396,14 +396,13 @@ while True:
                     print('정확한 알파벳을 입력해 주세요.')
 
             while True:
-                try:
-                    sel_row = int(input('{}번째 관객분의 좌석번호를 선택해 주세요 (숫자): '.format(i + 1))) - 1
-                    if 0 < sel_row < sel_hall[1]:
-                        break
-                    else:
-                        print('정확한 좌석을 입력해 주세요.')
-                except ValueError:
-                    print('잘못된 입력입니다.')
+
+                sel_row = int(input('{}번째 관객분의 좌석번호를 선택해 주세요 (숫자): '.format(i + 1))) - 1
+                if 0 < sel_row < sel_hall[1]:
+                    break
+                else:
+                    print('정확한 좌석을 입력해 주세요.')
+
 
             if [str(sel_line), str(sel_row + 1)] in occupied_seats:
                 # print([str(sel_line), str(sel_row + 1)])
