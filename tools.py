@@ -252,6 +252,7 @@ def show_hall(sel_hall, hall, sel_time) -> list:
     del is_occupied[-1]
     # is_occupied 의 형식 -> [['2','3'],['1','10']] 꼴
 
+    # print(occupy_line)
     # # 테스트전용
     if len(is_occupied) > 0:
         if is_occupied[-1] == ['']:
